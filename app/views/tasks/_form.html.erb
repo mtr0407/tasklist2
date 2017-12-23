@@ -1,5 +1,6 @@
 <div class="row">
   <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+    <form class="form-horizontal">
       <%= form_for(task) do |f| %>
     
       <% if task.errors.any? %>
@@ -13,21 +14,22 @@
       <% end %>
   
         <div class="form-group">
-        <%= f.label :status, 'ステータス' %>
-        <%= f.text_field :status %>
+        <label for="task_status">ステータス</label>
+        <input type="text" name="task[status]" id="task_status">
         </div>
   
         <div class="form-group">
-        <%= f.label :title, 'タイトル' %>
-        <%= f.text_field :title %>
+        <label for="task_title">タイトル</label>
+        <input type="text" name="task[title]" id="task_title">
         </div>
   
         <div class="form-group">
-        <%= f.label :content, 'メッセージ' %>
-        <%= f.text_field :content %>
+        <label for="task_content">メッセージ</label>
+        <input type="text" name="task[content]" id="task_content">
         </div>
       
       <%= f.submit '作成', class: 'btn btn-primary' %>
     <% end %>
+    </form>
   </div>
 </div>

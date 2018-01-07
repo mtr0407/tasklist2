@@ -1,8 +1,9 @@
 class TasksController < ApplicationController
+  before_action :require_user_logged_in
   before_action :set_message, only: [:show, :edit, :update, :destroy]
   
   def index
-    @tasks = Task.all.page(params[:page])
+    @tasks = current_user.tasks.order('created_at DESC').page(params[:page])
   end
 
   def show
@@ -13,12 +14,13 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(message_params)
+    @task = current_user.tasks.build(tasks_params)
     
     if @task.save
       flash[:success]='Taskが正常に作成されました'
       redirect_to @task
     else
+      @tasks = current_user.tasks.order('created_at DESC').page(params[:page])
       flash.now[:danger]='Taskは作成されませんでした'
       render :new
     end
@@ -30,7 +32,7 @@ class TasksController < ApplicationController
   def update
     set_message
 
-    if @task.update(message_params)
+    if @task.update(tasks_params)
       flash[:success] = 'タスク は正常に更新されました'
       redirect_to @task
     else
@@ -53,8 +55,8 @@ class TasksController < ApplicationController
   end
 
   # Strong Parameter
-  def message_params
-    params.require(:task).permit(:content,:title,:status)
+  def tasks_params
+    params.require(:task).permit(:content,:title,:status,:user)
   end
 
 end
